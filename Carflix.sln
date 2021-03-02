@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31019.35
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carflix", "Carflix\Carflix.csproj", "{8A024EDE-CDDF-4189-AC91-E7FA61CA8564}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A024EDE-CDDF-4189-AC91-E7FA61CA8564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A024EDE-CDDF-4189-AC91-E7FA61CA8564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A024EDE-CDDF-4189-AC91-E7FA61CA8564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A024EDE-CDDF-4189-AC91-E7FA61CA8564}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5B9B076E-A384-4130-B3AA-589AFA246D5A}
+	EndGlobalSection
+EndGlobal
