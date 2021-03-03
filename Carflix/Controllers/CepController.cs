@@ -98,10 +98,6 @@ namespace Carflix.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CadastrarCep(ViaCepResponse cepConsultado)
         {
-            if (cepConsultado == null)
-            {
-
-            }
             var existeCepCadastrado = await context.Logradouros.FirstOrDefaultAsync(a => a.Cep.Equals(cepConsultado.Cep));
 
             if (existeCepCadastrado == null)
