@@ -1,76 +1,91 @@
 ﻿@model Carflix.ViewModels.ViaCepResponse
 
-<form asp-controller="ConsultaCep" asp-action="CadastrarCep"
-      method="POST"
-      data-ajax-method="POST"
-      data-ajax="true"
-      data-ajax-mode="replace">
-    <h2>CEP</h2>
-    <div>
-        <h4>@Model.Cep</h4>
-        <hr />
-        <dl>
-            <dt>
-                @Html.DisplayNameFor(model => model.Logradouro)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Logradouro)
-            </dd>
+@if (Model != null)
+{
+    <form asp-controller="ConsultaCep" asp-action="CadastrarCep"
+          method="POST"
+          data-ajax-method="POST"
+          data-ajax="true"
+          data-ajax-mode="replace"
+          data-ajax-update="#ResultadoConsulta"
+          >
+        @Html.HiddenFor(model => model.Logradouro)
+        @Html.HiddenFor(model => model.Complemento)
+        @Html.HiddenFor(model => model.Bairro)
+        @Html.HiddenFor(model => model.DDD)
+        @Html.HiddenFor(model => model.Gia)
+        @Html.HiddenFor(model => model.Cep)
+        @Html.HiddenFor(model => model.Ibge)
+        @Html.HiddenFor(model => model.Localidade)
+        @Html.HiddenFor(model => model.Uf)
+        @Html.HiddenFor(model => model.Siafi)
+        @Html.HiddenFor(model => model.Unidade)
+        <h2>CEP</h2>
+        <div>
+            <h4>@Model.Cep</h4>
+            <hr />
+            <dl>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Logradouro)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Logradouro)
+                </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Complemento)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Complemento)
-            </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Complemento)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Complemento)
+                </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Bairro)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Bairro)
-            </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Bairro)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Bairro)
+                </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Localidade)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Localidade)
-            </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Localidade)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Localidade)
+                </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Uf)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Uf)
-            </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Uf)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Uf)
+                </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Ibge)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Ibge)
-            </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Ibge)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Ibge)
+                </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Gia)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Gia)
-            </dd>
-        </dl>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="btn-group">
-                <button class="btn btn-secondary" type="submit">
-                    Cadastrar CEP na base de dados
-                </button>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Gia)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Gia)
+                </dd>
+            </dl>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="btn-group">
+                    <button class="btn btn-secondary" type="submit">
+                        Cadastrar CEP na base de dados
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-</form>
-
+    </form>
+}
 @if (TempData.ContainsKey("success"))
 {
     foreach (var value in TempData.Values)
@@ -94,4 +109,17 @@
         </script>
     }
     TempData.Remove("warning");
+}
+
+@if (TempData.ContainsKey("error"))
+{
+    foreach (var value in TempData.Values)
+    {
+        <script>
+
+            toastr.error("@value.ToString()");
+        </script>
+
+    }
+    TempData.Remove("error");
 }

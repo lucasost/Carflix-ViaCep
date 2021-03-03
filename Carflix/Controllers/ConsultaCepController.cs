@@ -28,56 +28,63 @@ namespace Carflix.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Consultar(ConsultaCepViewModel viewModel)
+        public async Task<ActionResult> Consultar(ConsultaCepViewModel viewModel, string value = "")
         {
-            var cepClient = RestService.For<IViaCepApiService>("http://viacep.com.br");
-
-            var logradouro = await cepClient.BuscaLogradouro(viewModel.Cep);
-
-            if (string.IsNullOrWhiteSpace(logradouro.Erro))
+            try
             {
-                viewModel.Resposta = new ViaCepResponse();
-                viewModel.Resposta.Cep = logradouro.Cep;
-                viewModel.Resposta.Bairro = logradouro.Bairro;
-                viewModel.Resposta.Complemento = logradouro.Complemento;
-                viewModel.Resposta.Gia = logradouro.Gia;
-                viewModel.Resposta.Ibge = logradouro.Ibge;
-                viewModel.Resposta.Uf = logradouro.Uf;
-                viewModel.Resposta.Unidade = logradouro.Unidade;
-                viewModel.Resposta.Logradouro = logradouro.Logradouro;
-                viewModel.Resposta.Localidade = logradouro.Localidade;
-                viewModel.Resposta.Gia = logradouro.Gia;
-                viewModel.Resposta.DDD = logradouro.DDD;
-                viewModel.Resposta.Siafi = logradouro.Siafi;
+                var cepClient = RestService.For<IViaCepApiService>("http://viacep.com.br");
 
-                var existeCepCadastrado = await context.Logradouros.FirstOrDefaultAsync(a => a.Cep.Equals(logradouro.Cep));
+                var logradouro = await cepClient.BuscaLogradouro(viewModel.Cep);
 
-                if (existeCepCadastrado == null)
+                if (string.IsNullOrWhiteSpace(logradouro.Erro))
                 {
-                    context.Logradouros.Add(new Models.Logradouro()
+                    viewModel.Resposta = new ViaCepResponse();
+                    viewModel.Resposta.Cep = logradouro.Cep;
+                    viewModel.Resposta.Bairro = logradouro.Bairro;
+                    viewModel.Resposta.Complemento = logradouro.Complemento;
+                    viewModel.Resposta.Gia = logradouro.Gia;
+                    viewModel.Resposta.Ibge = logradouro.Ibge;
+                    viewModel.Resposta.Uf = logradouro.Uf;
+                    viewModel.Resposta.Unidade = logradouro.Unidade;
+                    viewModel.Resposta.Logradouro = logradouro.Logradouro;
+                    viewModel.Resposta.Localidade = logradouro.Localidade;
+                    viewModel.Resposta.Gia = logradouro.Gia;
+                    viewModel.Resposta.DDD = logradouro.DDD;
+                    viewModel.Resposta.Siafi = logradouro.Siafi;
+
+                    var existeCepCadastrado = await context.Logradouros.FirstOrDefaultAsync(a => a.Cep.Equals(logradouro.Cep));
+
+                    if (existeCepCadastrado == null && (string.IsNullOrWhiteSpace(value) || value.Equals("CadastrarNovoCep")))
                     {
-                        LogradouroId = Guid.NewGuid(),
-                        Cep = logradouro.Cep,
-                        Bairro = logradouro.Bairro,
-                        Complemento = logradouro.Complemento,
-                        Gia = logradouro.Gia,
-                        Ibge = logradouro.Ibge,
-                        Uf = logradouro.Uf,
-                        Unidade = logradouro.Unidade,
-                        Descricao = logradouro.Logradouro,
-                        Localidade = logradouro.Localidade
-                    });
-                    context.SaveChanges();
-                    TempData["success"] = "CEP cadastrado na base de dados!!";
+                        context.Logradouros.Add(new Models.Logradouro()
+                        {
+                            LogradouroId = Guid.NewGuid(),
+                            Cep = logradouro.Cep,
+                            Bairro = logradouro.Bairro,
+                            Complemento = logradouro.Complemento,
+                            Gia = logradouro.Gia,
+                            Ibge = logradouro.Ibge,
+                            Uf = logradouro.Uf,
+                            Unidade = logradouro.Unidade,
+                            Descricao = logradouro.Logradouro,
+                            Localidade = logradouro.Localidade
+                        });
+                        context.SaveChanges();
+                        TempData["success"] = "CEP cadastrado na base de dados!!";
+                    }
+                    else if (existeCepCadastrado != null)
+                    {
+                        TempData["warning"] = "CEP já estava cadastrado em nossa base de dados!!";
+                    }
                 }
                 else
                 {
-                    TempData["warning"] = "CEP já estava cadastrado em nossa base de dados!!";
+                    TempData["error"] = "CEP não encontrado!!";
                 }
             }
-            else
+            catch (Exception erro)
             {
-                TempData["error"] = "CEP não encontrado!!";
+                TempData["error"] = "CEP não encontrado!! ERRO:" + erro.Message;
             }
 
             if (Request?.IsAjaxRequest() ?? false)
@@ -88,25 +95,42 @@ namespace Carflix.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CadastrarCep(ViaCepResponse cepConsultado)
+        public async Task<ActionResult> CadastrarCep(ViaCepResponse cepConsultado)
         {
-            context.Logradouros.Add(new Models.Logradouro()
+            if (cepConsultado == null)
             {
-                LogradouroId = Guid.NewGuid(),
-                Cep = cepConsultado.Cep,
-                Bairro = cepConsultado.Bairro,
-                Complemento = cepConsultado.Complemento,
-                Gia = cepConsultado.Gia,
-                Ibge = cepConsultado.Ibge,
-                Uf = cepConsultado.Uf,
-                Unidade = cepConsultado.Unidade,
-                Descricao = cepConsultado.Logradouro,
-                Localidade = cepConsultado.Localidade
-            });
 
-            context.SaveChanges();
+            }
+            var existeCepCadastrado = await context.Logradouros.FirstOrDefaultAsync(a => a.Cep.Equals(cepConsultado.Cep));
 
-            return View("Indice");
+            if (existeCepCadastrado == null)
+            {
+                context.Logradouros.Add(new Models.Logradouro()
+                {
+                    LogradouroId = Guid.NewGuid(),
+                    Cep = cepConsultado.Cep,
+                    Bairro = cepConsultado.Bairro,
+                    Complemento = cepConsultado.Complemento,
+                    Gia = cepConsultado.Gia,
+                    Ibge = cepConsultado.Ibge,
+                    Uf = cepConsultado.Uf,
+                    Unidade = cepConsultado.Unidade,
+                    Descricao = cepConsultado.Logradouro,
+                    Localidade = cepConsultado.Localidade,
+                    Siafi = cepConsultado.Siafi,
+                    DDD = cepConsultado.DDD,
+                });
+
+                context.SaveChangesAsync();
+
+                TempData["success"] = "CEP cadastrado na base de dados!!";
+            }
+            else if (existeCepCadastrado != null)
+            {
+                TempData["warning"] = "CEP já estava cadastrado em nossa base de dados!!";
+            }
+
+            return PartialView("_CepResultado", null);
         }
 
         // GET: ConsultaCepController/Details/5
