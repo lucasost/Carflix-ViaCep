@@ -1,4 +1,5 @@
 ﻿using Carflix.Extensions;
+using Carflix.Models;
 using Carflix.Services;
 using Carflix.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -11,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace Carflix.Controllers
 {
-    public class ConsultaCepController : BaseController
+    public class CepController : BaseController
     {
         private CarflixContext context;
 
-        public ConsultaCepController(CarflixContext context)
+        public CepController(CarflixContext context)
         {
             this.context = context;
         }
@@ -121,7 +122,7 @@ namespace Carflix.Controllers
                     DDD = cepConsultado.DDD,
                 });
 
-                context.SaveChangesAsync();
+                await context.SaveChangesAsync();
 
                 TempData["success"] = "CEP cadastrado na base de dados!!";
             }
@@ -133,78 +134,13 @@ namespace Carflix.Controllers
             return PartialView("_CepResultado", null);
         }
 
-        // GET: ConsultaCepController/Details/5
         [HttpGet]
-        public ActionResult Details(int id)
+        public ActionResult ListarCepCadastrado()
         {
-            return View();
-        }
+            var logradouros = context.Logradouros.ToList();
 
-        // GET: ConsultaCepController/Create
-
-        [HttpGet]
-        public ActionResult Create()
-        {
-            return View();
+            return View(logradouros);
         }
-
-        // POST: ConsultaCepController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ConsultaCepController/Edit/5
-        [HttpGet]
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ConsultaCepController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ConsultaCepController/Delete/5
-        [HttpGet]
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ConsultaCepController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
     }
 }

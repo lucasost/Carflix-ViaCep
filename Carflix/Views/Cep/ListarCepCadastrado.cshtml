@@ -1,0 +1,34 @@
+﻿@model List<Carflix.Models.Logradouro>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            CEP
+        </th>
+        <th>
+            Logradouro
+        </th>
+        <th>
+            Cidade
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cep)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Localidade) - @Html.DisplayFor(modelItem => item.Uf)
+            </td>
+        </tr>
+    }
+</table>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

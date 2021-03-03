@@ -29,7 +29,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ConsultaCep" asp-action="Index">Consulta CEP</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cep" asp-action="Index">Consulta CEP</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cep" asp-action="ListarCepCadastrado">Listar CEP</a>
                         </li>
                     </ul>
                 </div>
@@ -37,12 +40,6 @@
         </nav>
     </header>
     <div class="container">
-        @*<input type="hidden" id="success"
-               value="@TempData["success"]" />
-        <input type="hidden" id="warning"
-               value="@TempData["warning"]" />
-        <input type="hidden" id="error"
-               value="@TempData["error"]" />*@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

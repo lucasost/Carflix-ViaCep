@@ -34,8 +34,6 @@ namespace Carflix
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 
 
-            services.AddDatabaseDeveloperPageExceptionFilter();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
