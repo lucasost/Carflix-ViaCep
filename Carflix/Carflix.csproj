@@ -19,6 +19,7 @@
     <PackageReference Include="Refit" Version="6.0.24" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="System.Web.Optimization.Less" Version="1.3.5" />
+    <PackageReference Include="toastr" Version="2.1.1" />
   </ItemGroup>
 
 </Project>

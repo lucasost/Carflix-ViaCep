@@ -3,8 +3,10 @@ using Carflix.Services;
 using Carflix.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Refit;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Carflix.Controllers
@@ -32,7 +34,7 @@ namespace Carflix.Controllers
 
             var logradouro = await cepClient.BuscaLogradouro(viewModel.Cep);
 
-            if (logradouro != null)
+            if (string.IsNullOrWhiteSpace(logradouro.Erro))
             {
                 viewModel.Resposta = new ViaCepResponse();
                 viewModel.Resposta.Cep = logradouro.Cep;
@@ -44,22 +46,38 @@ namespace Carflix.Controllers
                 viewModel.Resposta.Unidade = logradouro.Unidade;
                 viewModel.Resposta.Logradouro = logradouro.Logradouro;
                 viewModel.Resposta.Localidade = logradouro.Localidade;
+                viewModel.Resposta.Gia = logradouro.Gia;
+                viewModel.Resposta.DDD = logradouro.DDD;
+                viewModel.Resposta.Siafi = logradouro.Siafi;
 
-                context.Logradouros.Add(new Models.Logradouro()
+                var existeCepCadastrado = await context.Logradouros.FirstOrDefaultAsync(a => a.Cep.Equals(logradouro.Cep));
+
+                if (existeCepCadastrado == null)
                 {
-                    LogradouroId = Guid.NewGuid(),
-                    Cep = logradouro.Cep,
-                    Bairro = logradouro.Bairro,
-                    Complemento = logradouro.Complemento,
-                    Gia = logradouro.Gia,
-                    Ibge = logradouro.Ibge,
-                    Uf = logradouro.Uf,
-                    Unidade = logradouro.Unidade,
-                    Descricao = logradouro.Logradouro,
-                    Localidade = logradouro.Localidade
-                });
-
-                context.SaveChanges();
+                    context.Logradouros.Add(new Models.Logradouro()
+                    {
+                        LogradouroId = Guid.NewGuid(),
+                        Cep = logradouro.Cep,
+                        Bairro = logradouro.Bairro,
+                        Complemento = logradouro.Complemento,
+                        Gia = logradouro.Gia,
+                        Ibge = logradouro.Ibge,
+                        Uf = logradouro.Uf,
+                        Unidade = logradouro.Unidade,
+                        Descricao = logradouro.Logradouro,
+                        Localidade = logradouro.Localidade
+                    });
+                    context.SaveChanges();
+                    TempData["success"] = "CEP cadastrado na base de dados!!";
+                }
+                else
+                {
+                    TempData["warning"] = "CEP já estava cadastrado em nossa base de dados!!";
+                }
+            }
+            else
+            {
+                TempData["error"] = "CEP não encontrado!!";
             }
 
             if (Request?.IsAjaxRequest() ?? false)

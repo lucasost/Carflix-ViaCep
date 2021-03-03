@@ -1,63 +1,97 @@
 ﻿@model Carflix.ViewModels.ViaCepResponse
 
-    <form asp-controller="ConsultaCep" asp-action="Cadastrar"
-          method="POST"
-          data-ajax-method="POST"
-          data-ajax="true"
-          data-ajax-mode="replace"
-          data-ajax-update="#ResultadoConsulta">
+<form asp-controller="ConsultaCep" asp-action="CadastrarCep"
+      method="POST"
+      data-ajax-method="POST"
+      data-ajax="true"
+      data-ajax-mode="replace">
+    <h2>CEP</h2>
+    <div>
+        <h4>@Model.Cep</h4>
+        <hr />
+        <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.Logradouro)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Logradouro)
+            </dd>
 
-        <h2>CEP</h2>
-        <div>
-            <h4>@Model.Cep</h4>
-            <hr />
-            <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.Complemento)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Complemento)
+            </dd>
 
-                <dd>
-                    @Html.DisplayFor(model => model.Logradouro)
-                </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Bairro)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Bairro)
+            </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.Complemento)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Complemento)
-                </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Localidade)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Localidade)
+            </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.Bairro)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Bairro)
-                </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Uf)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Uf)
+            </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.Localidade)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Localidade)
-                </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Ibge)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Ibge)
+            </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.Uf)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Uf)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.Ibge)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Ibge)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.Gia)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Gia)
-                </dd>
-            </dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.Gia)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Gia)
+            </dd>
+        </dl>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="btn-group">
+                <button class="btn btn-secondary" type="submit">
+                    Cadastrar CEP na base de dados
+                </button>
+            </div>
         </div>
-    </form>
+    </div>
+</form>
+
+@if (TempData.ContainsKey("success"))
+{
+    foreach (var value in TempData.Values)
+    {
+        <script>
+
+            toastr.success("@value.ToString()");
+        </script>
+
+    }
+    TempData.Remove("success");
+}
+
+@if (TempData.ContainsKey("warning"))
+{
+    foreach (var value in TempData.Values)
+    {
+        <script>
+
+            toastr.warning("@value.ToString()");
+        </script>
+    }
+    TempData.Remove("warning");
+}

@@ -6,6 +6,13 @@
     <title>@ViewData["Title"] - Carflix</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/toastr.css" rel="stylesheet" />
+    <style>
+        .toast-top-right {
+            top: 60px;
+            right: 12px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -30,6 +37,12 @@
         </nav>
     </header>
     <div class="container">
+        @*<input type="hidden" id="success"
+               value="@TempData["success"]" />
+        <input type="hidden" id="warning"
+               value="@TempData["warning"]" />
+        <input type="hidden" id="error"
+               value="@TempData["error"]" />*@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -43,6 +56,44 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/toastr.js"></script>
     @RenderSection("Scripts", required: false)
+    <script>
+        $(function () {
+            var displayMessage = function (message, msgType) {
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+                toastr[msgType](message);
+            };
+
+            if ($('#success').val()) {
+                displayMessage($('#success').val(), 'success');
+            }
+            if ($('#info').val()) {
+                displayMessage($('#info').val(), 'info');
+            }
+            if ($('#warning').val()) {
+                displayMessage($('#warning').val(), 'warning');
+            }
+            if ($('#error').val()) {
+                displayMessage($('#error').val(), 'error');
+            }
+        });
+    </script>
 </body>
 </html>

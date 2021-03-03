@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ namespace Carflix.ViewModels
     public class ViaCepResponse
     {
         [JsonProperty("cep")]
+        [Display(Name ="CEP")]
         public string Cep { get; set; }
 
         [JsonProperty("logradouro")]
@@ -21,15 +23,19 @@ namespace Carflix.ViewModels
         public string Bairro { get; set; }
 
         [JsonProperty("localidade")]
+        [Display(Name = "Cidade")]
         public string Localidade { get; set; }
 
         [JsonProperty("uf")]
+        [Display(Name = "UF")]
         public string Uf { get; set; }
 
         [JsonProperty("unidade")]
+        [Display(Name = "Estado")]
         public string Unidade { get; set; }
 
         [JsonProperty("ibge")]
+        [Display(Name = "Código IBGE")]
         public string Ibge { get; set; }
 
         [JsonProperty("gia")]
@@ -40,5 +46,8 @@ namespace Carflix.ViewModels
 
         [JsonProperty("siafi")]
         public string Siafi { get; set; }
+
+        [JsonProperty("erro")]
+        public string Erro { get; set; }
     }
 }
