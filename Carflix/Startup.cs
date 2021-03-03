@@ -1,9 +1,12 @@
+using Carflix.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +26,16 @@ namespace Carflix
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connection = @"Server=./;Database=Logradouros;Trusted_Connection=True;ConnectRetryCount=0";
+            services.AddDbContext<CarflixContext>(options => options.UseSqlServer(connection));
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
+
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,5 +65,6 @@ namespace Carflix
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+      
     }
 }

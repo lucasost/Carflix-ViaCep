@@ -5,14 +5,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Refit;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Carflix.Controllers
 {
-    public class ConsultaCepController : Controller
+    public class ConsultaCepController : BaseController
     {
+        private CarflixContext context;
+
+        public ConsultaCepController(CarflixContext context)
+        {
+            this.context = context;
+        }
+
         // GET: ConsultaCepController
         [HttpGet]
         public ActionResult Index()
@@ -39,12 +44,51 @@ namespace Carflix.Controllers
                 viewModel.Resposta.Unidade = logradouro.Unidade;
                 viewModel.Resposta.Logradouro = logradouro.Logradouro;
                 viewModel.Resposta.Localidade = logradouro.Localidade;
+
+                context.Logradouros.Add(new Models.Logradouro()
+                {
+                    LogradouroId = Guid.NewGuid(),
+                    Cep = logradouro.Cep,
+                    Bairro = logradouro.Bairro,
+                    Complemento = logradouro.Complemento,
+                    Gia = logradouro.Gia,
+                    Ibge = logradouro.Ibge,
+                    Uf = logradouro.Uf,
+                    Unidade = logradouro.Unidade,
+                    Descricao = logradouro.Logradouro,
+                    Localidade = logradouro.Localidade
+                });
+
+                context.SaveChanges();
             }
 
             if (Request?.IsAjaxRequest() ?? false)
                 return PartialView("_CepResultado", viewModel.Resposta);
 
             return View("Indice", viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CadastrarCep(ViaCepResponse cepConsultado)
+        {
+            context.Logradouros.Add(new Models.Logradouro()
+            {
+                LogradouroId = Guid.NewGuid(),
+                Cep = cepConsultado.Cep,
+                Bairro = cepConsultado.Bairro,
+                Complemento = cepConsultado.Complemento,
+                Gia = cepConsultado.Gia,
+                Ibge = cepConsultado.Ibge,
+                Uf = cepConsultado.Uf,
+                Unidade = cepConsultado.Unidade,
+                Descricao = cepConsultado.Logradouro,
+                Localidade = cepConsultado.Localidade
+            });
+
+            context.SaveChanges();
+
+            return View("Indice");
         }
 
         // GET: ConsultaCepController/Details/5
