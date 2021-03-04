@@ -1,4 +1,5 @@
 using Carflix.Data;
+using Carflix.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Refit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +30,7 @@ namespace Carflix
         {
             var connection = @"Server=./;Database=Logradouros;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<CarflixContext>(options => options.UseSqlServer(connection));
-
+            services.AddRefitClient<IViaCepApiService>().ConfigureHttpClient(c => c.BaseAddress = new Uri("https://viacep.com.br/"));
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
@@ -63,6 +65,6 @@ namespace Carflix
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
-      
+
     }
 }

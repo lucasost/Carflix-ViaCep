@@ -12,6 +12,9 @@
             Logradouro
         </th>
         <th>
+            Complemento
+        </th>
+        <th>
             Cidade
         </th>
     </tr>
@@ -26,9 +29,13 @@
                 @Html.DisplayFor(modelItem => item.Descricao)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Complemento)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Localidade) - @Html.DisplayFor(modelItem => item.Uf)
             </td>
         </tr>
     }
 </table>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

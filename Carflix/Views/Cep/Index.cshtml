@@ -2,39 +2,11 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<form asp-controller="Cep" asp-action="Consultar"
-      method="get"
-      data-ajax-method="GET"
-      data-ajax="true"
-      data-ajax-mode="replace"
-      data-ajax-update="#ResultadoConsulta">
 
-    <div class="row form-group">
-        <div class="col-md-4 col-xs-6">
-            @Html.LabelFor(model => model.Cep, htmlAttributes: new { @class = "col-form-label" })
-            @Html.EditorFor(model => model.Cep, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Cep, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="btn-group">
-                <button class="btn btn-secondary" type="submit" value="CadastrarNovoCep" name="value" id="Cadastrar">
-                    Consultar e cadastrar CEP
-                </button>
-                <button class="btn btn-secondary" type="submit" value="ConsultarNovoCep" name="value" id="Consultar">
-                    Consultar apenas
-                </button>
-            </div>
-        </div>
-    </div>
-</form>
 <div id="ResultadoConsulta">
-    @if (Model.Resposta != null)
-    {
-        @Html.Partial("_CepResultado", Model.Resposta)
-    }
+        @Html.Partial("_PesquisaCep", Model)
 </div>
+
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/jquery.unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>

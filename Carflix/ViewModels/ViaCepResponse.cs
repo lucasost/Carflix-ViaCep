@@ -1,16 +1,12 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Carflix.ViewModels
 {
     public class ViaCepResponse
     {
         [JsonProperty("cep")]
-        [Display(Name ="CEP")]
+        [Display(Name = "CEP")]
         public string Cep { get; set; }
 
         [JsonProperty("logradouro")]
@@ -48,6 +44,6 @@ namespace Carflix.ViewModels
         public string Siafi { get; set; }
 
         [JsonProperty("erro")]
-        public string Erro { get; set; }
+        public bool Erro { get; set; }
     }
 }

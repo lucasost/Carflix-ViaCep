@@ -99,27 +99,3 @@
     TempData.Remove("success");
 }
 
-@if (TempData.ContainsKey("warning"))
-{
-    foreach (var value in TempData.Values)
-    {
-        <script>
-
-            toastr.warning("@value.ToString()");
-        </script>
-    }
-    TempData.Remove("warning");
-}
-
-@if (TempData.ContainsKey("error"))
-{
-    foreach (var value in TempData.Values)
-    {
-        <script>
-
-            toastr.error("@value.ToString()");
-        </script>
-
-    }
-    TempData.Remove("error");
-}
